@@ -1,0 +1,117 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.service;
+
+import "google/protobuf/timestamp.proto";
+import "proto/model/CommonModels.proto";
+import "proto/EmoloyeeModels.proto";
+import "proto/EmoloyerModels.proto";
+
+option java_multiple_files = true;
+
+// сотрудник
+message Employee {
+    optional string id = 1;
+    optional Employer employer = 2;
+    Position position = 3;
+    optional string phone = 4;
+    optional common.employee.EmployeeStatus status = 5;
+    optional Requisites requisites = 6;
+    repeated ServiceStopInterval serviceStopIntervals = 7;
+    optional google.protobuf.Timestamp updatedAt = 8;
+    optional google.protobuf.Timestamp createdAt = 9;
+    optional google.protobuf.Timestamp registeredAt = 10;
+}
+
+// работодатель
+message Employer {
+    optional string id = 1;
+    optional string name = 2;
+    common.employer.EmployerStatus status = 3;
+    optional Requisites requisites = 4;
+    optional string email = 5;
+    repeated Tariff tariffs = 6;
+    optional common.PaymentGatewayProvider paymentProvider = 7;
+    optional google.protobuf.Timestamp updatedAt = 8;
+    optional google.protobuf.Timestamp createdAt = 9;
+    optional BudgetOrganization budgetOrg = 10;
+    repeated Contact contacts = 11;
+}
+
+
+
+// позиция сотрудника
+message Position {
+    optional string id = 1;
+    optional bool isCheckedByList = 2;
+    repeated Salary salaries = 3;
+    optional google.protobuf.Timestamp updatedAt = 4;
+    optional google.protobuf.Timestamp createdAt = 5;
+    optional string externalPositionId = 6; //внешний идентификатор позиции
+}
+
+// Реквизиты
+message Requisites {
+    optional string id = 1;
+    optional string accountNumber = 2; //Номер счета
+    optional string bik = 3; // БИК
+    optional string kpp = 4; //КПП
+    optional string inn = 5; //Номер счета
+    optional string bankName = 6; //Имя банка
+    optional string corr = 7; //Корр счет
+    optional string firstName = 8; //Имя
+    optional string lastName = 9; //Фамилия
+    optional string patronymicName = 10; //Отчество
+    optional string passportSeries = 11;
+    optional string passportNumber = 12;
+    optional string snils = 13;
+    optional google.protobuf.Timestamp updatedAt = 14;
+    optional google.protobuf.Timestamp createdAt = 15;
+    optional google.protobuf.Timestamp passportIssuedDate = 16;
+    optional string passportIssued = 17;
+    optional string passportIssuerCode = 18;
+    optional string registrationAddress = 19;
+}
+
+
+// Счет работника
+message Salary {
+    optional string id = 1;
+    optional int64 availableCash = 3;
+    optional int64 earnedForMonth = 4;
+    repeated Payment payments = 5;
+    optional string rate = 6;
+    optional int64 availableCashToView = 7; //доступные средства показываемые пользователю
+    optional google.protobuf.Timestamp period = 8;
+    optional google.protobuf.Timestamp updatedAt = 9;
+    optional google.protobuf.Timestamp createdAt = 10;
+    optional bool serviceAvailable = 11;
+}
+
+
+// Транзакция выплаты
+message Transaction {
+    optional string id = 1;
+    common.transaction.TransactionStatus status = 2;
+    optional google.protobuf.Timestamp date = 3;
+    optional int64 totalSum = 4;
+    optional string signId = 5;
+    optional common.ApproveStatus approveStatus = 6;
+    repeated Payment payments = 7;
+    optional string employeeId = 8;
+    optional Employee employee = 9;
+    optional string documentId = 10;
+    optional google.protobuf.Timestamp updatedAt = 11;
+    optional google.protobuf.Timestamp createdAt = 12;
+    optional int64 commissionToView = 13;
+    optional common.CommissionPayer commissionPayer = 14;
+    optional int64 commission = 15;
+    optional common.PaymentGatewayProvider paymentProvider = 16;
+}
+
+message ApproveSignDocuments {
+    string entityId = 1;
+    string notificationId = 2;
+    string employeeId = 3;
+    string signId = 4;
+    repeated string documentIds = 5;
+}

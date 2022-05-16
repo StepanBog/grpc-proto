@@ -1,0 +1,68 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.service;
+
+import "proto/Models.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+
+service EmployeeService {
+
+    // создать работника если не найден
+    rpc create(Employee) returns (Employee);
+
+    //обновить пользователя
+    rpc update(Employee) returns (Employee);
+
+    // получить работников по критериям поиска
+    rpc find(SearchEmployeeRequest) returns (EmployeesResponse);
+
+    // получить конкретного работника по id
+    rpc findOneById(FindOneByIdEmployeeRequest) returns (Employee);
+
+    // получить количество работников у конкретного работодателя с учетом статуса работника
+    rpc countEmployeesByEmployer(CountEmployeesByEmployerRequest) returns (CountEmployeesResponse);
+
+    // подтвердить работника выплаты
+    rpc approveSign(ApproveSignDocuments) returns (google.protobuf.Empty);
+}
+
+//========== response ==============
+message EmployeesResponse {
+    repeated Employee employees = 1;
+    int64 totalSize = 2;
+    int32 totalPages = 3;
+}
+
+//сущность для поиска работников
+message SearchEmployeeRequest {
+    optional string employerId = 1;
+    optional google.protobuf.Timestamp salaryUpdatedAfterDate = 2;
+    optional string bankAccountNumber = 3;
+    optional common.employee.EmployeeStatus status = 4;
+    optional string employeeId = 5;
+    optional int32  pageNumber = 6;
+    optional int32  pageSize = 7;
+    optional string firstName = 8; //Имя
+    optional string lastName = 9; //Фамилия
+    optional string patronymicName = 10; //Отчество
+    optional string phone = 11;
+    optional google.protobuf.Timestamp createdAt = 12;
+    optional google.protobuf.Timestamp updatedAt = 13;
+}
+
+//сущность для запроса конкретного работника
+message FindOneByIdEmployeeRequest {
+    string id = 1;
+}
+
+//сущность для запроса количества работников у конкретного работодателя
+message CountEmployeesByEmployerRequest {
+    Employer employer = 1;
+    optional common.employee.EmployeeStatus status = 2;
+}
+
+message CountEmployeesResponse {
+    int64 count = 1 ;
+}

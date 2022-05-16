@@ -1,0 +1,72 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.common;
+
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+//Статус подтверждения операции
+enum ApproveStatus {
+    UNKNOWN = 0;
+    TO_APPROVE = 1;   //ожидает подтверждения
+    APPROVED = 2; //подтвержденн
+    EXPIRED = 3; //истекло время жизни
+    EXCEEDED = 4; // превышено количество попыток ввода
+    DEACTIVATED = 5; // неактивно
+}
+
+//Тип сущности
+enum EntityType {
+    UNKNOWN_TYPE = 0;
+    SIGN = 1; //Подпись
+    PAYMENT_TRANSACTION = 2; //Выплата
+    EMPLOYEE_FIELD_TO_APPROVE = 3; //поле работника для подтверждения
+    EMPLOYEE = 4; //Работник
+}
+
+//Роли пользователя
+enum UserRole {
+    UNKNOWN_ROLE = 0;
+    ROLE_USER = 1; //Роль пользователя системы
+    ROLE_SERVICE = 2; //Роль сервисного пользователя
+    ROLE_1C_INTEGRATION = 3; //Роль интеграционного пользователя
+    ROLE_TEST_USER = 4; //Роль тестового пользователя
+    ROLE_ADMIN = 5; //Администраторская роль
+}
+
+//Плательщик комиссии
+enum CommissionPayer {
+    UNKNOWN_PAYER = 0;
+    EMPLOYER_PAYER = 1;   //Плательщик комиссии работодатель
+    EMPLOYEE_PAYER = 2;   //Плательщик комиссии работник
+    BANK_PAYER = 3; //Плательщик комиссии банк
+    APPLICATION_PAYER = 4; //Плательщик комиссии приложение
+}
+
+//платежный провайдер
+enum PaymentGatewayProvider {
+    NONE_PAYMENT_PROVIDER = 0;
+    MOBI = 1;
+    REGISTRY = 2;
+}
+
+//========== request ==============
+message ApproveRequest {
+    string entityId = 1;
+    string notificationId = 2;
+    string employeeId = 3;
+}
+
+message EntityIdRequest {
+    string entityId = 1;
+}
+
+//========== model ==============
+message InternalServiceModel {
+    string employerId = 1;
+    string employeeId = 2;
+    bool testMode = 3;
+    repeated string roles = 4;
+}
+message DateTimeWithTimeZone {
+    google.protobuf.Timestamp timeStamp = 1;
+    string zoneId = 2;
+}
