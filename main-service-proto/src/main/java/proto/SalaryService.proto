@@ -1,0 +1,35 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.service.salary;
+
+import "proto/Models.proto";
+
+option java_multiple_files = true;
+
+service SalaryService {;
+
+    // получить конкретный счет работника по id
+    rpc findOneById(FindSalaryByIdRequest) returns (Salary);
+
+    // получить конкретный счет работника по id
+    rpc findByEmployeeId(FindSalaryByEmployeeRequest) returns (SalaryResponse);
+
+    // получить общий счет работника по empoloyeeId
+    rpc findTotal(FindSalaryByEmployeeRequest) returns (Salary);
+
+    // обновить зарплату работника
+    rpc save(Salary) returns (Salary);
+}
+
+message FindSalaryByIdRequest {
+    string id = 1;
+}
+
+//сущность для запроса счета работника по id работодателя и логину / номеру счета
+message FindSalaryByEmployeeRequest {
+    string employeeId = 1;
+}
+
+//========== response ==============
+message SalaryResponse {
+    repeated Salary salaries = 1;
+}

@@ -1,0 +1,54 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.service.transaction;
+
+import "proto/Models.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+
+service TransactionService {
+
+    // совершить выплату
+    rpc pickUpPayment(PickUpPaymentRequest) returns (Transaction);
+
+    // получить конкретную выплату работника по id
+    rpc findOneById(FindByIdRequest) returns (Transaction);
+
+    // получить выплаты по критериям поиска
+    rpc find(SearchTransactionRequest) returns (TransactionSearchResponse);
+}
+
+message FindByIdRequest {
+    string transactionId = 1;
+}
+
+message PickUpPaymentRequest {
+    int64 sum = 1;
+    string employeeId = 2;
+}
+
+//сущность для запроса поиска выплат работников
+message SearchTransactionRequest {
+    optional string employeeId = 1;
+    optional string employerId = 2;
+    optional string bankAccountNumber = 3;
+    optional int32  pageNumber = 4;
+    optional int32  pageSize = 5;
+    optional google.protobuf.Timestamp fromDate = 6;
+    optional google.protobuf.Timestamp toDate = 7;
+    optional TransactionStatus status = 8;
+    optional int64 sum = 9;
+    optional string id = 10;
+    optional google.protobuf.Timestamp createdAt = 11;
+    optional google.protobuf.Timestamp updatedAt = 12;
+    optional int64 commission = 13;
+
+}
+
+//========== response ==============
+message TransactionSearchResponse {
+    repeated Transaction transactions = 1;
+    int64 totalSize = 2;
+    int32 totalPages = 3;
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.auth.token;
+
+import "proto/Models.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+
+service TokenService {
+
+    rpc validateToken(google.protobuf.Empty) returns (TokenResponse);
+
+    rpc generateToken(GenerateTokenRequest) returns (TokenResponse);
+
+    rpc refreshToken(RefreshTokenRequest) returns (TokenResponse);
+}
+
+message TokenResponse {
+    string accessToken = 1;
+    model.User user = 2;
+    optional string refreshToken = 3;
+}
+
+message GenerateTokenRequest {
+    string employeeId = 1;
+}
+
+message RefreshTokenRequest {
+    string refreshToken = 1;
+}

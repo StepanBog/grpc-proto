@@ -1,0 +1,35 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.auth.model;
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+message User {
+    optional string id = 1;
+    optional string username = 2;
+    repeated Role roles = 3;
+    optional string employerId = 4;
+    optional string employeeId = 5;
+    optional bool enable = 6;
+    optional string password = 7;
+    optional string refreshTokenTtl = 8;
+    optional google.protobuf.Timestamp updatedAt = 9;
+    optional google.protobuf.Timestamp createdAt = 10;
+}
+
+
+message Role {
+    optional string id = 1;
+    optional UserRole roleName = 2;
+    optional string description = 3;
+    optional google.protobuf.Timestamp updatedAt = 4;
+    optional google.protobuf.Timestamp createdAt = 5;
+}
+//Роли пользователя
+enum UserRole {
+    UNKNOWN_ROLE = 0;
+    ROLE_EMPLOYEE = 1; //Роль пользователя работника
+    ROLE_EMPLOYER = 2; //Роль пользователя работодателя
+    ROLE_ADMIN = 3; //Администраторская роль
+}

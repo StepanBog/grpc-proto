@@ -1,0 +1,49 @@
+syntax = "proto3";
+package ru.bogdanov.diplom.grpc.generated.auth.user;
+
+import "proto/Models.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+service UserService {
+
+    rpc createIfNotExist(model.User) returns (model.User);
+
+    // Найти пользователей
+    rpc find(UserSearchRequest) returns (UsersResponse);
+
+    // получить конкретного работника
+    rpc findOne(OneUserRequest) returns (model.User);
+
+    // сохранять пользователя
+    rpc save(model.User) returns (model.User);
+
+}
+
+//========== request ==============
+//сущность для поиска пользователей
+message UserSearchRequest {
+    optional string employeeId = 1;
+    optional string employerId = 2;
+    optional string login = 3;
+    optional string id = 4;
+    repeated model.UserRole roles = 5;
+    optional int32  pageNumber = 6;
+    optional int32  pageSize = 7;
+    optional google.protobuf.Timestamp createdAt = 8;
+    optional google.protobuf.Timestamp updatedAt = 9;
+}
+
+//========== response ==============
+
+message UsersResponse {
+    repeated model.User users = 1;
+    int64 totalSize = 2;
+    int32 totalPages = 3;
+}
+
+//сущность для запроса конкретного пользователя
+message OneUserRequest {
+    string userId = 1;
+}

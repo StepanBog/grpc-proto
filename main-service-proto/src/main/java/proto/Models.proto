@@ -2,53 +2,30 @@ syntax = "proto3";
 package ru.bogdanov.diplom.grpc.generated.service;
 
 import "google/protobuf/timestamp.proto";
-import "proto/model/CommonModels.proto";
-import "proto/EmoloyeeModels.proto";
-import "proto/EmoloyerModels.proto";
-
 option java_multiple_files = true;
 
 // сотрудник
 message Employee {
     optional string id = 1;
     optional Employer employer = 2;
-    Position position = 3;
+    Salary salary = 3;
     optional string phone = 4;
-    optional common.employee.EmployeeStatus status = 5;
+    optional EmployeeStatus status = 5;
     optional Requisites requisites = 6;
-    repeated ServiceStopInterval serviceStopIntervals = 7;
     optional google.protobuf.Timestamp updatedAt = 8;
     optional google.protobuf.Timestamp createdAt = 9;
-    optional google.protobuf.Timestamp registeredAt = 10;
 }
 
 // работодатель
 message Employer {
     optional string id = 1;
     optional string name = 2;
-    common.employer.EmployerStatus status = 3;
-    optional Requisites requisites = 4;
-    optional string email = 5;
-    repeated Tariff tariffs = 6;
-    optional common.PaymentGatewayProvider paymentProvider = 7;
-    optional google.protobuf.Timestamp updatedAt = 8;
-    optional google.protobuf.Timestamp createdAt = 9;
-    optional BudgetOrganization budgetOrg = 10;
-    repeated Contact contacts = 11;
+    optional Requisites requisites = 3;
+    optional string email = 4;
+    optional google.protobuf.Timestamp updatedAt = 5;
+    optional google.protobuf.Timestamp createdAt = 6;
+
 }
-
-
-
-// позиция сотрудника
-message Position {
-    optional string id = 1;
-    optional bool isCheckedByList = 2;
-    repeated Salary salaries = 3;
-    optional google.protobuf.Timestamp updatedAt = 4;
-    optional google.protobuf.Timestamp createdAt = 5;
-    optional string externalPositionId = 6; //внешний идентификатор позиции
-}
-
 // Реквизиты
 message Requisites {
     optional string id = 1;
@@ -64,12 +41,12 @@ message Requisites {
     optional string passportSeries = 11;
     optional string passportNumber = 12;
     optional string snils = 13;
-    optional google.protobuf.Timestamp updatedAt = 14;
-    optional google.protobuf.Timestamp createdAt = 15;
-    optional google.protobuf.Timestamp passportIssuedDate = 16;
-    optional string passportIssued = 17;
-    optional string passportIssuerCode = 18;
-    optional string registrationAddress = 19;
+    optional google.protobuf.Timestamp passportIssuedDate = 14;
+    optional string passportIssued = 15;
+    optional string passportIssuerCode = 16;
+    optional string registrationAddress = 17;
+    optional google.protobuf.Timestamp updatedAt = 18;
+    optional google.protobuf.Timestamp createdAt = 19;
 }
 
 
@@ -78,7 +55,6 @@ message Salary {
     optional string id = 1;
     optional int64 availableCash = 3;
     optional int64 earnedForMonth = 4;
-    repeated Payment payments = 5;
     optional string rate = 6;
     optional int64 availableCashToView = 7; //доступные средства показываемые пользователю
     optional google.protobuf.Timestamp period = 8;
@@ -91,21 +67,14 @@ message Salary {
 // Транзакция выплаты
 message Transaction {
     optional string id = 1;
-    common.transaction.TransactionStatus status = 2;
+    TransactionStatus status = 2;
     optional google.protobuf.Timestamp date = 3;
     optional int64 totalSum = 4;
-    optional string signId = 5;
-    optional common.ApproveStatus approveStatus = 6;
-    repeated Payment payments = 7;
+    optional ApproveStatus approveStatus = 6;
     optional string employeeId = 8;
     optional Employee employee = 9;
-    optional string documentId = 10;
     optional google.protobuf.Timestamp updatedAt = 11;
     optional google.protobuf.Timestamp createdAt = 12;
-    optional int64 commissionToView = 13;
-    optional common.CommissionPayer commissionPayer = 14;
-    optional int64 commission = 15;
-    optional common.PaymentGatewayProvider paymentProvider = 16;
 }
 
 message ApproveSignDocuments {
@@ -115,3 +84,80 @@ message ApproveSignDocuments {
     string signId = 4;
     repeated string documentIds = 5;
 }
+
+enum EmployeeStatus {
+    NONE_STATUS = 0;
+    NEW = 1;   //начальный статус пользователя, данных от работодателя нет, в т.ч. персонализированных документов;
+    SIGN_OFFER = 2; //пользователь должен подписать документы
+    ENABLED = 3;  //пользователь может использовать сервис
+    DISABLED = 4;  //пользователь может только просматривать отчеты;
+    ARCHIVED = 5;  //пользователь помечен, как удаленный
+    APPROVED = 6; //пользователь подтвержден 1С и не находится в черном списке
+    ERROR = 7;    //пользователь помечен как перешедший в ошибку
+    OFFER_SIGNED = 8;    //документы подписанны сотрудником
+    ACT_AVAILABLE_CASH = 9;    //получена доступная сумма для выплаты сотрудником
+}
+
+//Статус работодателя
+enum EmployerStatus {
+    NON_STATUS = 0;
+    CREATED = 1;   //Новый статус работодателя
+    SIGNED = 2;   //подписан
+    ACTIVE = 3; //работодатель готов к работе
+    PAUSE = 4; //приостановле
+    CLOSED = 5; //работодатель закрыт
+}
+
+enum TransactionStatus {
+    NO_STATUS = 0;
+    AWAITING_CONFIRMATION = 1; //ожидаем подтверждения одноразовым кодом для вывода средств
+    CONFIRMED = 2; //платеж в создан в платежном сервисе
+    PROCESSING = 3; //платеж в обработке
+    SUCCESS = 4; //платеж успешно проведен платежным провайдером
+    DECLINE = 5; //платеж отклонен платежным провайдером
+    TRANSACTION_ERROR = 6;   //ошибка проведения платежа
+    EXPIRED = 7; // транзакция просрочена
+    AWAITING_DISPATCH = 8; // ожидание отправки
+    NEW_TRANSACTION = 9; // созданна новая транзакция
+}
+
+
+//Статус подтверждения операции
+enum ApproveStatus {
+    UNKNOWN = 0;
+    TO_APPROVE = 1;   //ожидает подтверждения
+    APPROVED_STATUS = 2; //подтвержденн
+    EXPIRED_STATUS = 3; //истекло время жизни
+    EXCEEDED = 4; // превышено количество попыток ввода
+    DEACTIVATED = 5; // неактивно
+}
+
+//Тип сущности
+enum EntityType {
+    UNKNOWN_TYPE = 0;
+    SIGN = 1; //Подпись
+    PAYMENT_TRANSACTION = 2; //Выплата
+    EMPLOYEE_FIELD_TO_APPROVE = 3; //поле работника для подтверждения
+    EMPLOYEE = 4; //Работник
+}
+
+
+//========== request ==============
+message ApproveRequest {
+    string entityId = 1;
+    string notificationId = 2;
+    string employeeId = 3;
+}
+
+message EntityIdRequest {
+    string entityId = 1;
+}
+
+//========== model ==============
+message InternalServiceModel {
+    string employerId = 1;
+    string employeeId = 2;
+    bool testMode = 3;
+    repeated string roles = 4;
+}
+

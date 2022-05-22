@@ -1,6 +1,7 @@
 syntax = "proto3";
 package ru.bogdanov.diplom.grpc.generated.service;
 
+
 import "proto/Models.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
@@ -24,8 +25,6 @@ service EmployeeService {
     // получить количество работников у конкретного работодателя с учетом статуса работника
     rpc countEmployeesByEmployer(CountEmployeesByEmployerRequest) returns (CountEmployeesResponse);
 
-    // подтвердить работника выплаты
-    rpc approveSign(ApproveSignDocuments) returns (google.protobuf.Empty);
 }
 
 //========== response ==============
@@ -40,7 +39,7 @@ message SearchEmployeeRequest {
     optional string employerId = 1;
     optional google.protobuf.Timestamp salaryUpdatedAfterDate = 2;
     optional string bankAccountNumber = 3;
-    optional common.employee.EmployeeStatus status = 4;
+    optional EmployeeStatus status = 4;
     optional string employeeId = 5;
     optional int32  pageNumber = 6;
     optional int32  pageSize = 7;
@@ -60,7 +59,7 @@ message FindOneByIdEmployeeRequest {
 //сущность для запроса количества работников у конкретного работодателя
 message CountEmployeesByEmployerRequest {
     Employer employer = 1;
-    optional common.employee.EmployeeStatus status = 2;
+    optional EmployeeStatus status = 2;
 }
 
 message CountEmployeesResponse {
