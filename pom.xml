@@ -12,6 +12,7 @@
     <modules>
         <module>main-service-proto</module>
         <module>auth-proto</module>
+        <module>common-proto</module>
     </modules>
 
     <properties>

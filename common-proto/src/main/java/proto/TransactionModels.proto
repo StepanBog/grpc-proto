@@ -1,0 +1,13 @@
+syntax = "proto3";
+package tech.inno.odp.grpc.generated.common.transaction;
+
+option java_multiple_files = true;
+
+enum TransactionStatus {
+    NONE_STATUS = 0;
+    AWAITING_CONFIRMATION = 1;
+    CONFIRMED = 2;
+    DECLINE = 3; //платеж отклонен платежным провайдером
+    TRANSACTION_ERROR = 4;   //ошибка проведения платежа
+    EXPIRED = 5; // транзакция просрочена
+}

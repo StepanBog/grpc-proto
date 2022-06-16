@@ -1,0 +1,13 @@
+syntax = "proto3";
+package tech.inno.odp.grpc.generated.common.employee;
+
+option java_multiple_files = true;
+
+enum EmployeeStatus {
+    NONE_STATUS = 0;
+    NEW = 1;
+    ENABLED = 2;
+    DISABLED = 3;
+    ERROR = 4;
+}
+

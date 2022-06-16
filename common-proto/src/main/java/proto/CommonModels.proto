@@ -1,0 +1,41 @@
+syntax = "proto3";
+package tech.inno.odp.grpc.generated.common;
+
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+//Статус подтверждения операции
+enum ApproveStatus {
+    UNKNOWN = 0;
+    TO_APPROVE = 1;   //ожидает подтверждения
+    APPROVED = 2; //подтвержденн
+    EXPIRED = 3; //истекло время жизни
+    EXCEEDED = 4; // превышено количество попыток ввода
+    DEACTIVATED = 5; // неактивно
+}
+
+//Роли пользователя
+enum UserRole {
+    UNKNOWN_ROLE = 0;
+    ROLE_EMPLOYEE = 1; //Роль пользователя системы
+    ROLE_EMPLOYER = 2; //Роль сервисного пользователя
+    ROLE_ADMIN = 3; //Администраторская роль
+}
+
+//========== request ==============
+message ApproveRequest {
+    string entityId = 1;
+    string notificationId = 2;
+    string employeeId = 3;
+}
+
+message EntityIdRequest {
+    string entityId = 1;
+}
+
+//========== model ==============
+message InternalServiceModel {
+    string employerId = 1;
+    string employeeId = 2;
+    bool testMode = 3;
+    repeated string roles = 4;
+}

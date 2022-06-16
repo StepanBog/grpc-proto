@@ -9,21 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auth-proto</artifactId>
+    <artifactId>odp-common-proto</artifactId>
     <version>1.0</version>
-
-    <dependencies>
-        <dependency>
-            <groupId>ru.bogdanov.diplom</groupId>
-            <artifactId>main-service-proto</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.bogdanov.diplom</groupId>
-            <artifactId>odp-common-proto</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
@@ -49,4 +36,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>
