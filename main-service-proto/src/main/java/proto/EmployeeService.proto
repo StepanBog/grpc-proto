@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ru.bogdanov.diplom.grpc.generated.service;
+package ru.bogdanov.diplom.grpc.generated.service.employee;
 
 
 import "proto/Models.proto";
@@ -25,6 +25,8 @@ service EmployeeService {
     // получить количество работников у конкретного работодателя с учетом статуса работника
     rpc countEmployeesByEmployer(CountEmployeesByEmployerRequest) returns (CountEmployeesResponse);
 
+    rpc activateEmployee(ActivateRequest) returns (google.protobuf.Empty);
+
 }
 
 //========== response ==============
@@ -33,7 +35,9 @@ message EmployeesResponse {
     int64 totalSize = 2;
     int32 totalPages = 3;
 }
-
+message ActivateRequest {
+    string employeeId = 1;
+}
 //сущность для поиска работников
 message SearchEmployeeRequest {
     optional string employerId = 1;

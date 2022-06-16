@@ -28,7 +28,7 @@ message UserSearchRequest {
     optional string employerId = 2;
     optional string login = 3;
     optional string id = 4;
-    repeated model.UserRole roles = 5;
+    optional model.UserRole role = 5;
     optional int32  pageNumber = 6;
     optional int32  pageSize = 7;
     optional google.protobuf.Timestamp createdAt = 8;

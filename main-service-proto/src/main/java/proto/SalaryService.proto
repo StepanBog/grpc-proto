@@ -31,5 +31,5 @@ message FindSalaryByEmployeeRequest {
 
 //========== response ==============
 message SalaryResponse {
-    repeated Salary salaries = 1;
+    optional Salary salary = 1;
 }

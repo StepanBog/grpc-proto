@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ru.bogdanov.diplom.grpc.generated.service;
+package ru.bogdanov.diplom.grpc.generated;
 
 import "google/protobuf/timestamp.proto";
 option java_multiple_files = true;
@@ -21,10 +21,24 @@ message Employer {
     optional string id = 1;
     optional string name = 2;
     optional Requisites requisites = 3;
-    optional string email = 4;
-    optional google.protobuf.Timestamp updatedAt = 5;
-    optional google.protobuf.Timestamp createdAt = 6;
+    optional google.protobuf.Timestamp updatedAt = 4;
+    optional google.protobuf.Timestamp createdAt = 5;
+    repeated Contact contacts = 6;
 
+}
+message Contact {
+    optional string id = 1;
+    optional ContactsPosition position = 2; //Должность
+    optional string name = 3; //ФИО контактного лица
+    optional string phone = 4;
+    optional string email = 5;
+    optional google.protobuf.Timestamp updatedAt = 6;
+    optional google.protobuf.Timestamp createdAt = 7;
+}
+
+enum ContactsPosition {
+    MANAGER = 0; //Менеджер
+    EMPLOYERS_CONTACT = 1; //Контактное лицо работодателя
 }
 // Реквизиты
 message Requisites {
@@ -77,25 +91,21 @@ message Transaction {
     optional google.protobuf.Timestamp createdAt = 12;
 }
 
-message ApproveSignDocuments {
-    string entityId = 1;
-    string notificationId = 2;
-    string employeeId = 3;
-    string signId = 4;
-    repeated string documentIds = 5;
+message ApproveRequest {
+    string transactionId = 1;
+}
+message DeclineRequest {
+    string transactionId = 1;
 }
 
 enum EmployeeStatus {
     NONE_STATUS = 0;
-    NEW = 1;   //начальный статус пользователя, данных от работодателя нет, в т.ч. персонализированных документов;
-    SIGN_OFFER = 2; //пользователь должен подписать документы
-    ENABLED = 3;  //пользователь может использовать сервис
-    DISABLED = 4;  //пользователь может только просматривать отчеты;
-    ARCHIVED = 5;  //пользователь помечен, как удаленный
-    APPROVED = 6; //пользователь подтвержден 1С и не находится в черном списке
-    ERROR = 7;    //пользователь помечен как перешедший в ошибку
-    OFFER_SIGNED = 8;    //документы подписанны сотрудником
-    ACT_AVAILABLE_CASH = 9;    //получена доступная сумма для выплаты сотрудником
+    NEW_EMPLOYEE = 1;   //начальный статус пользователя, данных от работодателя нет, в т.ч. персонализированных документов;
+    ENABLED_EMPLOYEE = 2;  //пользователь может использовать сервис
+    DISABLED_EMPLOYEE = 3;  //пользователь может только просматривать отчеты;
+    ARCHIVED_EMPLOYEE = 4;  //пользователь помечен, как удаленный
+    APPROVED_EMPLOYEE = 5; //пользователь подтвержден 1С и не находится в черном списке
+    ERROR_EMPLOYEE = 6;    //пользователь помечен как перешедший в ошибку
 }
 
 //Статус работодателя
@@ -110,15 +120,16 @@ enum EmployerStatus {
 
 enum TransactionStatus {
     NO_STATUS = 0;
-    AWAITING_CONFIRMATION = 1; //ожидаем подтверждения одноразовым кодом для вывода средств
+    NEW_TRANSACTION = 9; // созданна новая транзакция
+    AWAITING_CONFORMATION = 1;
     CONFIRMED = 2; //платеж в создан в платежном сервисе
     PROCESSING = 3; //платеж в обработке
     SUCCESS = 4; //платеж успешно проведен платежным провайдером
     DECLINE = 5; //платеж отклонен платежным провайдером
     TRANSACTION_ERROR = 6;   //ошибка проведения платежа
-    EXPIRED = 7; // транзакция просрочена
-    AWAITING_DISPATCH = 8; // ожидание отправки
-    NEW_TRANSACTION = 9; // созданна новая транзакция
+    TRANSACTION_EXPIRED= 7; // транзакция просрочена
+    WITHDRAWN = 8;
+
 }
 
 
@@ -126,27 +137,10 @@ enum TransactionStatus {
 enum ApproveStatus {
     UNKNOWN = 0;
     TO_APPROVE = 1;   //ожидает подтверждения
-    APPROVED_STATUS = 2; //подтвержденн
-    EXPIRED_STATUS = 3; //истекло время жизни
+    APPROVED = 2; //подтвержденн
+    EXPIRED = 3; //истекло время жизни
     EXCEEDED = 4; // превышено количество попыток ввода
     DEACTIVATED = 5; // неактивно
-}
-
-//Тип сущности
-enum EntityType {
-    UNKNOWN_TYPE = 0;
-    SIGN = 1; //Подпись
-    PAYMENT_TRANSACTION = 2; //Выплата
-    EMPLOYEE_FIELD_TO_APPROVE = 3; //поле работника для подтверждения
-    EMPLOYEE = 4; //Работник
-}
-
-
-//========== request ==============
-message ApproveRequest {
-    string entityId = 1;
-    string notificationId = 2;
-    string employeeId = 3;
 }
 
 message EntityIdRequest {

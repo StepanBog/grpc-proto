@@ -9,21 +9,30 @@ import "google/protobuf/timestamp.proto";
 
 service TransactionService {
 
-    // совершить выплату
-    rpc pickUpPayment(PickUpPaymentRequest) returns (Transaction);
+    rpc createRequest(CreatePaymentRequest) returns (Transaction);
 
-    // получить конкретную выплату работника по id
     rpc findOneById(FindByIdRequest) returns (Transaction);
 
-    // получить выплаты по критериям поиска
     rpc find(SearchTransactionRequest) returns (TransactionSearchResponse);
+
+    // подтвердить транзакцию выплаты
+    rpc approveRequest(ApproveRequest) returns (google.protobuf.Empty);
+
+    rpc declineRequest(DeclineRequest) returns (google.protobuf.Empty);
+
+    rpc update(UpdateRequest) returns (google.protobuf.Empty);
+
 }
 
 message FindByIdRequest {
     string transactionId = 1;
 }
+message UpdateRequest {
+    string transactionId = 1;
+    TransactionStatus status = 2;
+}
 
-message PickUpPaymentRequest {
+message CreatePaymentRequest {
     int64 sum = 1;
     string employeeId = 2;
 }

@@ -8,7 +8,7 @@ option java_multiple_files = true;
 message User {
     optional string id = 1;
     optional string username = 2;
-    repeated Role roles = 3;
+    optional Role role = 3;
     optional string employerId = 4;
     optional string employeeId = 5;
     optional bool enable = 6;

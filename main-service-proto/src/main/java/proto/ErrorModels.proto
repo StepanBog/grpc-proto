@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ru.bogdanov.diplom.grpc.generated.common;
+package ru.bogdanov.diplom.grpc.generated.error;
 
 option java_multiple_files = true;
 
