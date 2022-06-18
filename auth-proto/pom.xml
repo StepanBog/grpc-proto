@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>ru.bogdanov.diplom</groupId>
-            <artifactId>odp-common-proto</artifactId>
+            <artifactId>common-proto</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
