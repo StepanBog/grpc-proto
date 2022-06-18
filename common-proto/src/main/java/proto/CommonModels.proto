@@ -1,14 +1,13 @@
 syntax = "proto3";
-package tech.inno.odp.grpc.generated.common;
+package ru.bogdanov.diplom.grpc.generated.common;
 
 option java_multiple_files = true;
-import "google/protobuf/timestamp.proto";
 //Статус подтверждения операции
 enum ApproveStatus {
     UNKNOWN = 0;
     TO_APPROVE = 1;   //ожидает подтверждения
     APPROVED = 2; //подтвержденн
-    EXPIRED = 3; //истекло время жизни
+    EXPIRED_Aa = 3; //истекло время жизни
     EXCEEDED = 4; // превышено количество попыток ввода
     DEACTIVATED = 5; // неактивно
 }
